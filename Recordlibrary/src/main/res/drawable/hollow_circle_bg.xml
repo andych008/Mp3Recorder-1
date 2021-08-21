@@ -6,7 +6,7 @@
     <solid android:color="@android:color/white" />
     <stroke
         android:width="12dp"
-        android:color="@color/colorPrimary" />
+        android:color="#ff2020" />
     <size
         android:width="40dp"
         android:height="40dp" />

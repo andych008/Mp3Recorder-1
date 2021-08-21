@@ -2,10 +2,16 @@
 
 buildscript {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        google()
+        mavenCentral()
         jcenter()
+        maven {url 'https://developer.huawei.com/repo/'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath "com.android.tools.build:gradle:4.1.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -14,22 +20,28 @@ buildscript {
 
 ext {
     android = [
-            buildToolsVersion: "25.0.2",
-            minSdkVersion    : 15,
-            targetSdkVersion : 25,
-            compileSdkVersion: 25,
+            buildToolsVersion: "30.0.3",
+            minSdkVersion    : 16,
+            targetSdkVersion : 28,
+            compileSdkVersion: 30,
             versionCode      : 1,
             versionName      : "1.0",
     ]
 
     dependencies = [
-            googleSupportVersion: "24.2.1"
+            googleSupportVersion: "28.0.0"
     ]
 }
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        google()
+        mavenCentral()
         jcenter()
+        maven {url 'https://developer.huawei.com/repo/'}
     }
 }
 

@@ -1,11 +1,14 @@
 package com.jason.recordlibrary;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+
 import com.jason.recordlibrary.utils.FileUtil;
 import com.jason.recordlibrary.view.RecordViewDialog;
+
 import java.io.File;
 
 /**
@@ -19,6 +22,7 @@ public class Mp3Recorder {
     private File file;
     private RecordViewDialog recordViewDialog;
     private RecordListener recordListener;
+    private Context context;
 
     private Mp3Recorder() {
     }
@@ -36,22 +40,33 @@ public class Mp3Recorder {
     }
 
     public void start(Context context) {
-        if (recordThread != null) {
-            stop();
-        }
-        file = new File(FileUtil.getCacheRootFile(context), mp3Name);
-        recordThread = new RecordThread(file, handler);
-        recordThread.start();
-
+        this.context = context;
         recordViewDialog = new RecordViewDialog(context, R.style.Dialog, onClickListener);
         recordViewDialog.show();
     }
 
-    public void stop() {
+    private void recordStart() {
+        if (recordThread != null) {
+            recordStop();
+        }
+        file = new File(FileUtil.getCacheRootFile(context), mp3Name);
+        recordThread = new RecordThread(file, handler);
+        recordThread.start();
+        recordViewDialog.recordStart();
+    }
+
+    private void recordStop() {
         if (recordThread != null) {
             recordThread.quit();
             recordThread = null;
         }
+    }
+
+    private void save() {
+        recordListener.onComplete(file.getPath());;
+    }
+
+    private void dismiss() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -60,19 +75,50 @@ public class Mp3Recorder {
         }, 100);
     }
 
+    private boolean hasRecord = false;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            stop();
             int i = v.getId();
-            if (i == R.id.ok) {
-                recordListener.onComplete(file.getPath());
+            if (i == R.id.iv_record_record) {
+                if (hasRecord) {
+                    hasRecord = false;
+                    recordStop();
+                    recordViewDialog.recordStop();
+                } else {
+                    hasRecord = true;
+                    recordStart();
+                }
+            } else if (i == R.id.iv_audio_save) {
+                save();
+                dismiss();
             } else if (i == R.id.delete) {
-                new File(FileUtil.getCacheRootFile(v.getContext()), mp3Name).delete();
+                recordStop();
+                new File(FileUtil.getCacheRootFile(context), mp3Name).delete();
+                dismiss();
                 recordListener.onCancel();
+            } else if (i == R.id.iv_audio_play) {
+                play();
             }
         }
     };
+
+    private MediaPlayer mPlayer;
+    private void play() {
+        try {
+            if (mPlayer == null)
+                mPlayer = new MediaPlayer();
+            if (mPlayer.isPlaying()) {
+                mPlayer.stop();
+            }
+            mPlayer.reset();
+            mPlayer.setDataSource(file.getPath());
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private Handler handler = new Handler() {
         @Override

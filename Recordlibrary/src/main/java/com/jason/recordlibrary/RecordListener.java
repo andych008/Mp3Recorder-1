@@ -5,6 +5,6 @@ package com.jason.recordlibrary;
  */
 
 public interface RecordListener {
-    public void onComplete(String path);
-    public void onCancel();
+    void onComplete(String path);
+    void onCancel();
 }

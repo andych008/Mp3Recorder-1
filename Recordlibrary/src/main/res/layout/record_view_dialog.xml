@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
+            android:visibility="gone"
             voiceView:fineness="three"
             voiceView:lineSpeed="90"
             voiceView:maxVolume="200"
@@ -29,15 +30,61 @@
             voiceView:voiceLine="@color/colorPrimary" />
 
 
-        <ImageView
-            android:id="@+id/ok"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
-            android:background="@drawable/hollow_circle_click" />
 
+        <LinearLayout
+            android:id="@+id/record_actions"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:background="#D53F66B5"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+
+            <ImageView
+                android:id="@+id/iv_record_record"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:src="@drawable/hollow_circle_bg" />
+<!--            aar_ic_stop-->
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/play_actions"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:background="#D53F66B5"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/iv_reset"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/aar_ic_restart" />
+
+            <ImageView
+                android:id="@+id/iv_audio_play"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/btn_play_normal2" />
+<!--    ic_media_pause  ic_media_stop      -->
+
+
+            <ImageView
+                android:id="@+id/iv_audio_save"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/btn_save_normal" />
+
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -48,6 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
+                android:drawableLeft="@drawable/img_circle_red"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 android:layout_marginLeft="10dp"
