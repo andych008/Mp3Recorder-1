@@ -63,7 +63,8 @@ public class Mp3Recorder {
     }
 
     private void save() {
-        recordListener.onComplete(file.getPath());;
+        recordListener.onComplete(file.getPath());
+        ;
     }
 
     private void dismiss() {
@@ -104,17 +105,31 @@ public class Mp3Recorder {
     };
 
     private MediaPlayer mPlayer;
+
     private void play() {
         try {
-            if (mPlayer == null)
+            if (mPlayer == null) {
                 mPlayer = new MediaPlayer();
-            if (mPlayer.isPlaying()) {
-                mPlayer.stop();
+                mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        mediaPlayer.stop();
+                        recordViewDialog.play(true);
+                    }
+                });
             }
-            mPlayer.reset();
-            mPlayer.setDataSource(file.getPath());
-            mPlayer.prepare();
-            mPlayer.start();
+
+            boolean hasPlay =mPlayer.isPlaying();
+            recordViewDialog.play(hasPlay);
+            if (hasPlay) {
+                mPlayer.stop();
+            } else {
+                mPlayer.reset();
+                mPlayer.setDataSource(file.getPath());
+                mPlayer.prepare();
+                mPlayer.start();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

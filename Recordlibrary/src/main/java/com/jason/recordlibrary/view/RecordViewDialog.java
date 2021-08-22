@@ -25,7 +25,7 @@ public class RecordViewDialog extends Dialog {
     private VoiceLineView voicLine;
     private View record_actions;
     private View play_actions;
-    private ImageView ok, delete, reset;
+    private ImageView ok, delete, reset, play;
     private Chronometer chronometer;
     private View.OnClickListener listener;
 
@@ -74,6 +74,23 @@ public class RecordViewDialog extends Dialog {
         play_actions.setVisibility(View.VISIBLE);
     }
 
+    public void play( boolean hasPlay) {
+        if (hasPlay) {
+            play.setImageResource(R.drawable.aar_ic_play);
+            voicLine.setVisibility(View.GONE);
+
+            chronometer.stop();
+            chronometer.setVisibility(View.GONE);
+        } else {
+            play.setImageResource(R.drawable.aar_ic_stop);
+            voicLine.setVisibility(View.VISIBLE);
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.setVisibility(View.VISIBLE);
+            chronometer.start();
+        }
+
+    }
+
     private void init() {
         View view = LayoutInflater.from(context).inflate(R.layout.record_view_dialog, null);
         setContentView(view);
@@ -83,9 +100,10 @@ public class RecordViewDialog extends Dialog {
         ok = (ImageView) view.findViewById(R.id.iv_record_record);
         delete = (ImageView) view.findViewById(R.id.delete);
         reset = (ImageView) view.findViewById(R.id.iv_reset);
+        play = (ImageView) view.findViewById(R.id.iv_audio_play);
         chronometer = (Chronometer) view.findViewById(R.id.chronometer);
 
-        view.findViewById(R.id.iv_audio_play).setOnClickListener(listener);
+        play.setOnClickListener(listener);
         view.findViewById(R.id.iv_audio_save).setOnClickListener(listener);
         ok.setOnClickListener(listener);
         delete.setOnClickListener(listener);
